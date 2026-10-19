@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Agile Library Management System</title>
+  <style>
+    body { font-family: system-ui, sans-serif; max-width: 650px; margin: 40px auto; padding: 20px; background: #f8fafc; }
+    .card { background: white; padding: 24px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+    input, button { padding: 10px; margin: 5px 0; border-radius: 4px; border: 1px solid #cbd5e1; }
+    button { background: #2563eb; color: white; border: none; cursor: pointer; font-weight: 600; }
+    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+    th, td { border-bottom: 1px solid #e2e8f0; padding: 10px; text-align: left; }
+    .badge { padding: 4px 8px; border-radius: 4px; font-size: 12px; font-weight: bold; }
+    .avail { background: #dcfce7; color: #166534; }
+    .issued { background: #fee2e2; color: #991b1b; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>📚 Agile Library Management System</h2>
+    <div>
+      <input id="isbn" placeholder="ISBN (e.g. 103)">
+      <input id="title" placeholder="Book Title">
+      <button onclick="addBook()">Add Book (US-01)</button>
+    </div>
+    <table>
+      <thead><tr><th>ISBN</th><th>Title</th><th>Status (US-02)</th><th>Action (US-03/04)</th></tr></thead>
+      <tbody id="catalog"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const books = [
+      { isbn: "101", title: "Agile Estimating and Planning", available: true },
+      { isbn: "202", title: "Clean Code", available: false }
+    ];
+    function render() {
+      document.getElementById("catalog").innerHTML = books.map((b, i) => `
+        <tr>
+          <td>${b.isbn}</td>
+          <td>${b.title}</td>
+          <td><span class="badge ${b.available ? 'avail' : 'issued'}">${b.available ? 'Available' : 'Issued'}</span></td>
+          <td><button onclick="toggle(${i})">${b.available ? 'Issue Book' : 'Return Book'}</button></td>
+        </tr>`).join("");
+    }
+    function addBook() {
+      const isbn = document.getElementById("isbn").value.trim();
+      const title = document.getElementById("title").value.trim();
+      if (isbn && title) { books.push({ isbn, title, available: true }); render(); }
+    }
+    function toggle(i) { books[i].available = !books[i].available; render(); }
+    render();
+  </script>
+</body>
+</html>
